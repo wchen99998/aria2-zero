@@ -100,7 +100,7 @@
 // reported gcc-4.2.2 has this problem. But gcc-4.4.5 does not suffer
 // from this problem.
 #define __DIABLE_COMPATIBLE_GETTEXT 1
-#include <boost/locale/libintl.h>
+#include "boost_locale_libintl.h"
 #  define _(String) boost_locale_gettext(String)
 #else // ENABLE_NLS
 #  define _(String) String

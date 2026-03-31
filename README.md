@@ -29,6 +29,16 @@ You must use this program at your own risk.
 
 ## Compile
 
+- CMake + vcpkg (recommended)
+    + Bootstrap vcpkg and install dependencies via manifest:
+      `git clone https://github.com/microsoft/vcpkg.git`
+      `./vcpkg/bootstrap-vcpkg.sh`
+    + Configure:
+      `cmake -S . -B build-cmake -DCMAKE_TOOLCHAIN_FILE="$PWD/vcpkg/scripts/buildsystems/vcpkg.cmake"`
+    + Build:
+      `cmake --build build-cmake -j`
+- Translation files use `msgfmt` from `gettext[tools]` in vcpkg.
+
 - Dynamic Library
     + Debug version: `xmake f -c -k shared -m debug --runtimes='MDd'`
     + Release version: `xmake f -c -k shared --runtimes='MD'`

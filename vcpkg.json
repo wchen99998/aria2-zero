@@ -1,0 +1,42 @@
+{
+  "name": "aria2-zero",
+  "version-string": "1.37.0-development",
+  "builtin-baseline": "bba8b52f6dea74159bba855ef00376e588d6ea0a",
+  "dependencies": [
+    "boost-locale",
+    "c-ares",
+    "expat",
+    "libssh2",
+    "openssl",
+    "sqlite3",
+    "zlib",
+    {
+      "name": "gettext",
+      "host": true,
+      "default-features": false,
+      "features": [
+        "tools"
+      ]
+    }
+  ],
+  "features": {
+    "uv": {
+      "description": "Enable libuv polling backend",
+      "dependencies": [
+        "libuv"
+      ]
+    },
+    "breakpad": {
+      "description": "Enable crash dump support",
+      "dependencies": [
+        "breakpad"
+      ]
+    },
+    "unit-tests": {
+      "description": "Enable CppUnit-based tests",
+      "dependencies": [
+        "cppunit"
+      ]
+    }
+  }
+}
