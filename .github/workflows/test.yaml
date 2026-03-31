@@ -7,27 +7,37 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      - name: xmake
-        uses: xmake-io/github-action-setup-xmake@v1
-        with:
-          xmake-version: latest
-      - name: test
-        run: xmake f -c -y --unit=y && xmake b test && xmake r test
+      - name: setup vcpkg
+        uses: lukka/run-vcpkg@v11
+      - name: configure
+        run: cmake -S . -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake"
+      - name: build
+        run: cmake --build build --config Release --parallel
+
   test-linux:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: xmake
-        uses: xmake-io/github-action-setup-xmake@v1
-        with:
-          xmake-version: latest
-      - name: test
-        run: xmake f -c -y --unit=y && xmake b test && xmake r test
+      - name: prepare
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ninja-build bison
+      - name: setup vcpkg
+        uses: lukka/run-vcpkg@v11
+      - name: configure
+        run: cmake -S . -B build -G Ninja -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+      - name: build
+        run: cmake --build build -j
+      - name: smoke test
+        run: ./build/aria2c --version
+
   test-macos:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
-      - name: xmake
-        run: brew install xmake && xmake --version
-      - name: test
-        run: xmake f -c -y --unit=y && xmake b test && xmake r test
+      - name: setup vcpkg
+        uses: lukka/run-vcpkg@v11
+      - name: configure
+        run: cmake -S . -B build -G Ninja -DCMAKE_TOOLCHAIN_FILE="${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+      - name: build
+        run: cmake --build build -j

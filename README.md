@@ -9,7 +9,7 @@ You must use this program at your own risk.
 
 ## Features
 
-- 使用 [xmake](https://github.com/xmake-io/xmake) 一键编译
+- 使用 CMake + vcpkg 一键编译
 - 支持 msvc 编译
 - 支持 windows 超长路径（MAX_PATH 一般 260 个字符，拼接了 `\\?\` 应该是支持 32767 个字符？）
 - 对 http 头做了简单的排序
@@ -40,15 +40,23 @@ You must use this program at your own risk.
 - Translation files use `msgfmt` from `gettext[tools]` in vcpkg.
 
 - Dynamic Library
-    + Debug version: `xmake f -c -k shared -m debug --runtimes='MDd'`
-    + Release version: `xmake f -c -k shared --runtimes='MD'`
+    + Debug version:
+      `cmake -S . -B build-cmake -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE="$PWD/vcpkg/scripts/buildsystems/vcpkg.cmake"`
+      and `cmake --build build-cmake -j`
+    + Release version:
+      `cmake -S . -B build-cmake -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="$PWD/vcpkg/scripts/buildsystems/vcpkg.cmake"`
+      and `cmake --build build-cmake -j`
 - Static Library
-    + Debug version: `xmake f -c -m debug`
-    + Debug version: `xmake f -c`
+    + Debug version:
+      `cmake -S . -B build-cmake -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE="$PWD/vcpkg/scripts/buildsystems/vcpkg.cmake"`
+      and `cmake --build build-cmake -j`
+    + Release version:
+      `cmake -S . -B build-cmake -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="$PWD/vcpkg/scripts/buildsystems/vcpkg.cmake"`
+      and `cmake --build build-cmake -j`
 
 ## ChangeLog
 
-- [x] 改为 xmake 工具编译
+- [x] 改为 CMake + vcpkg 工具编译
 - [x] 支持 msvc 编译
 - [x] 清理掉 makefile 支持
 - [x] 把 launchpad 上的 po 直接放到项目里
