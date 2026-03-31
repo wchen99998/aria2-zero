@@ -30,7 +30,7 @@
 
 #ifdef ENABLE_NLS
 #define __DIABLE_COMPATIBLE_GETTEXT 1
-#include <boost/locale/libintl.h>
+#include "boost_locale_libintl.h"
 #endif
 
 #ifdef ENABLE_NLS
